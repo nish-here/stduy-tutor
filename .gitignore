@@ -1,4 +1,5 @@
 __pycache__/
+.vscode
 *.pyc
 backend/model.joblib
 backend/predictions_log.csv

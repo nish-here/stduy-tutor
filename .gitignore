@@ -5,4 +5,5 @@ backend/model.joblib
 backend/predictions_log.csv
 node_modules/
 .DS_Store
-backend/.env
+.env
+**/.env

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>SubjectScore AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { board: "#10262b", chalk: "#eef0e4", dust: "#8fa6a3", yolk: "#f2d16b", sky: "#8fd0f2", rose: "#f2a0b8" },
+      fontFamily: { sans: ['"Bricolage Grotesque"', "system-ui", "sans-serif"], hand: ["Caveat", "cursive"] },
+    } } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-sans antialiased min-h-screen">
+  <main class="max-w-6xl mx-auto px-5 sm:px-8 py-8 sm:py-12">
+    <header class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M5 18l8 9L29 6" stroke="#f2d16b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h1 class="text-2xl font-extrabold tracking-tight">SubjectScore AI</h1>
+      </div>
+      <nav class="nav flex gap-6 text-sm" aria-label="Main">
+        <a href="/" aria-current="page">Predictor</a>
+        <a href="tutor.html">Tutor</a>
+      </nav>
+    </header>
+
+    <section class="mt-12 grid lg:grid-cols-5 gap-8 items-end" aria-labelledby="acc-h">
+      <div class="lg:col-span-3">
+        <h2 id="acc-h" class="sr-only">Accuracy</h2>
+        <p id="verdict" class="text-4xl sm:text-5xl font-bold leading-[1.08] tracking-tight max-w-[24ch]">Loading your predictions…</p>
+        <p id="vs" class="mt-4 text-lg text-dust max-w-[60ch]"></p>
+      </div>
+      <div class="lg:col-span-2">
+        <div id="bars" class="space-y-3 hidden">
+          <div class="flex items-center gap-3 text-sm"><span class="w-40 text-dust">The model</span><div class="track flex-1"><div id="bar-m" class="fill fill-rose" style="width:0"></div></div><span id="bar-mv" class="w-10 text-right"></span></div>
+          <div class="flex items-center gap-3 text-sm"><span class="w-40 text-dust">Guessing your average</span><div class="track flex-1"><div id="bar-b" class="fill fill-dust" style="width:0"></div></div><span id="bar-bv" class="w-10 text-right"></span></div>
+          <p class="text-sm text-dust">Typical miss in marks (RMSE). Shorter is better.</p>
+        </div>
+        <p id="live" class="mt-4 text-dust"></p>
+        <p class="mt-1 text-sm text-dust">Predictor in use: <span id="model" class="text-chalk">–</span>. Learned from <span id="rows" class="text-chalk">0</span> results.</p>
+      </div>
+    </section>
+
+    <div class="mt-12 grid lg:grid-cols-5 gap-8">
+      <section class="sheet p-6 sm:p-8 lg:col-span-3 self-start" aria-labelledby="next-h">
+        <h2 id="next-h" class="text-2xl font-bold">Next exams</h2>
+        <p class="mt-1 text-dust max-w-[60ch]">The model circles its guess in yellow. After the exam, write your real mark in blue and save.</p>
+        <ul id="inputs" class="mt-4"></ul>
+        <div class="mt-4 flex flex-wrap items-center gap-4">
+          <button id="save" class="btn">Save real marks and retrain</button>
+          <p id="status" class="text-sm text-dust" role="status"></p>
+        </div>
+      </section>
+
+      <div class="lg:col-span-2 space-y-8">
+        <section class="sheet p-6" aria-labelledby="chart-h">
+          <h2 id="chart-h" class="text-xl font-bold">Predicted vs real</h2>
+          <p class="mt-1 text-sm text-dust">Exams the model was tested on but never trained on. The closer a dot sits to the dashed line, the better the guess.</p>
+          <div id="chart-wrap" class="relative aspect-square mt-4 hidden"><canvas id="history"></canvas></div>
+          <div id="chart-empty" class="mt-4"><div class="empty">Not enough results to test the model yet. Save a few more exams and the test appears here.</div></div>
+        </section>
+        <section id="feedback-panel" class="sheet p-6 hidden" aria-labelledby="fb-h">
+          <h2 id="fb-h" class="text-xl font-bold">How your last guesses did</h2>
+          <ul id="feedback" class="mt-2"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

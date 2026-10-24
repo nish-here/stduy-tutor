@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Study tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { board: "#10262b", chalk: "#eef0e4", dust: "#8fa6a3", yolk: "#f2d16b", sky: "#8fd0f2", rose: "#f2a0b8" },
+      fontFamily: { sans: ['"Bricolage Grotesque"', "system-ui", "sans-serif"], hand: ["Caveat", "cursive"] },
+    } } };
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-sans antialiased min-h-screen">
+  <main class="max-w-3xl mx-auto px-5 sm:px-8 pt-8 sm:pt-12 flex flex-col min-h-screen">
+    <header class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M5 18l8 9L29 6" stroke="#f2d16b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h1 class="text-2xl font-extrabold tracking-tight">SubjectScore AI</h1>
+      </div>
+      <nav class="nav flex gap-6 text-sm" aria-label="Main">
+        <a href="/">Predictor</a>
+        <a href="tutor.html" aria-current="page">Tutor</a>
+      </nav>
+    </header>
+
+    <section class="mt-12">
+      <h2 class="text-4xl sm:text-5xl font-bold leading-[1.08] tracking-tight max-w-[22ch]">What are we studying today?</h2>
+      <label class="mt-6 block max-w-xs"><span class="text-sm text-dust">Subject</span>
+        <select id="subject" class="field"><option value="">Any subject</option></select></label>
+    </section>
+
+    <ul id="log" class="mt-8 space-y-5 flex-1" aria-live="polite"></ul>
+
+    <div class="sticky bottom-0 bg-board pt-4 pb-6">
+      <div id="starters" class="flex flex-wrap gap-2 mb-3">
+        <button class="chipbtn" data-fill="Explain this topic to me: ">Explain a topic</button>
+        <button class="chipbtn" data-fill="Quiz me with 3 questions on: ">Quiz me</button>
+        <button class="chipbtn" data-fill="Give me a short revision summary of: ">Revision summary</button>
+      </div>
+      <div class="flex gap-3 items-end">
+        <textarea id="ask" rows="2" class="ask flex-1" placeholder="Ask a doubt, or paste a question" aria-label="Your message"></textarea>
+        <button id="send" class="btn">Send</button>
+      </div>
+      <div class="mt-2 flex justify-between gap-4 text-sm text-dust">
+        <span>Enter sends. Shift+Enter adds a new line.</span>
+        <button id="reset" class="underline">New chat</button>
+      </div>
+    </div>
+  </main>
+  <script src="tutor.js"></script>
+</body>
+</html>

@@ -15,6 +15,8 @@ It starts with no data and makes random guesses. Every time you enter real resul
 - [Accuracy and evaluation](#accuracy-and-evaluation)
 - [Getting started](#getting-started)
 - [Using the dashboard](#using-the-dashboard)
+- [API](#api)
+- [Project structure](#project-structure)
 - [Limitations](#limitations)
 - [Ideas for next steps](#ideas-for-next-steps)
 
@@ -171,6 +173,39 @@ LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 - Replies show Markdown and maths. The tutor writes maths in LaTeX, and you can too: type `$x^2 + 1$` inline or `$$...$$` for a displayed equation. Rendering uses KaTeX, marked and DOMPurify from CDNs, so the page needs internet.
 - Your chats appear in a sidebar and are saved in your browser (localStorage) on this computer only. Clearing your browser data deletes them. The server does not store conversations.
 - When you pick a subject, the tutor is told your last few results in it so it can pitch its explanations. Your messages and those results are sent to your API provider.
+
+## API
+
+The Flask server also serves the frontend, so no CORS setup is needed.
+
+| Method | Route | Body | Returns |
+| --- | --- | --- | --- |
+| `GET` | `/api/metrics` | none | predictor in use, RMSE, baseline RMSE, number of results, subjects, held-out comparison, live RMSE |
+| `POST` | `/api/predict` | `{"subjects": {"Physics": 100}}` | list of `{subject, max, predicted, source}` |
+| `POST` | `/api/results` | `{"rows": [{"subject", "max_marks", "actual_marks", "predicted_marks"}]}` | the same as `/api/metrics`, plus `feedback` for the saved rows |
+
+`predicted_marks` is optional. Results sent without it are still learned from, but are left out of the live RMSE.
+
+## Project structure
+
+```
+SubjectScoreAI/
+├── backend/
+│   ├── data.csv              your real results (subject, max_marks, actual_marks), oldest first
+│   ├── sample_data.csv       made-up data for trying the model
+│   ├── train.py              features, evaluation, model selection and saving
+│   ├── predict.py            random guess / subject average / learned model
+│   ├── app.py                Flask API and live RMSE
+│   └── predictions_log.csv   created on first save: guesses you saw vs real marks
+├── frontend/
+│   ├── index.html            dashboard layout (Tailwind)
+│   ├── style.css             small custom styles
+│   ├── app.ts                TypeScript source
+│   └── app.js                compiled output of app.ts
+└── README.md
+```
+
+`data.csv` and `predictions_log.csv` hold your personal marks. Keep them out of a public repository if you would rather not share them.
 
 ## Limitations
 

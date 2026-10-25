@@ -15,45 +15,65 @@
       fontFamily: { sans: ['"Bricolage Grotesque"', "system-ui", "sans-serif"], hand: ["Caveat", "cursive"] },
     } } };
   </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="font-sans antialiased min-h-screen">
-  <main class="max-w-3xl mx-auto px-5 sm:px-8 pt-8 sm:pt-12 flex flex-col min-h-screen">
-    <header class="flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M5 18l8 9L29 6" stroke="#f2d16b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <h1 class="text-2xl font-extrabold tracking-tight">SubjectScore AI</h1>
+<body class="font-sans antialiased">
+  <div class="app">
+    <aside id="sidebar" class="side" aria-label="Your chats">
+      <div class="flex items-center justify-between gap-3 p-4">
+        <div class="flex items-center gap-2">
+          <svg width="28" height="28" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M5 18l8 9L29 6" stroke="#f2d16b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="font-extrabold tracking-tight">SubjectScore AI</span>
+        </div>
+        <button id="hide-chats" class="md:hidden text-sm text-dust underline">Close</button>
       </div>
-      <nav class="nav flex gap-6 text-sm" aria-label="Main">
-        <a href="/">Predictor</a>
-        <a href="tutor.html" aria-current="page">Tutor</a>
-      </nav>
-    </header>
+      <div class="px-4"><button id="new" class="btn w-full">New chat</button></div>
+      <ul id="chats" class="mt-4 px-2 pb-4 overflow-y-auto flex-1 space-y-1"></ul>
+    </aside>
 
-    <section class="mt-12">
-      <h2 class="text-4xl sm:text-5xl font-bold leading-[1.08] tracking-tight max-w-[22ch]">What are we studying today?</h2>
-      <label class="mt-6 block max-w-xs"><span class="text-sm text-dust">Subject</span>
-        <select id="subject" class="field"><option value="">Any subject</option></select></label>
-    </section>
+    <div class="chatcol">
+      <header class="flex flex-wrap items-center justify-between gap-3 px-5 sm:px-8 py-4 border-b border-white/10">
+        <div class="flex items-center gap-5">
+          <button id="show-chats" class="md:hidden text-sm underline">Chats</button>
+          <label class="flex items-center gap-3 text-sm text-dust">Subject
+            <select id="subject" class="field inline"><option value="">Any subject</option></select></label>
+        </div>
+        <nav class="nav flex gap-6 text-sm" aria-label="Main">
+          <a href="/">Predictor</a>
+          <a href="tutor.html" aria-current="page">Tutor</a>
+        </nav>
+      </header>
 
-    <ul id="log" class="mt-8 space-y-5 flex-1" aria-live="polite"></ul>
-
-    <div class="sticky bottom-0 bg-board pt-4 pb-6">
-      <div id="starters" class="flex flex-wrap gap-2 mb-3">
-        <button class="chipbtn" data-fill="Explain this topic to me: ">Explain a topic</button>
-        <button class="chipbtn" data-fill="Quiz me with 3 questions on: ">Quiz me</button>
-        <button class="chipbtn" data-fill="Give me a short revision summary of: ">Revision summary</button>
+      <div id="scroll" class="flex-1 overflow-y-auto px-5 sm:px-8">
+        <div class="max-w-3xl mx-auto py-8">
+          <section id="hero" class="pt-6 pb-4">
+            <h2 class="text-4xl sm:text-5xl font-bold leading-[1.08] tracking-tight max-w-[22ch]">What are we studying today?</h2>
+            <div id="starters" class="mt-6 flex flex-wrap gap-2">
+              <button class="chipbtn" data-fill="Explain this topic to me: ">Explain a topic</button>
+              <button class="chipbtn" data-fill="Quiz me with 3 questions on: ">Quiz me</button>
+              <button class="chipbtn" data-fill="Give me a short revision summary of: ">Revision summary</button>
+            </div>
+          </section>
+          <ul id="log" class="space-y-5" aria-live="polite"></ul>
+        </div>
       </div>
-      <div class="flex gap-3 items-end">
-        <textarea id="ask" rows="2" class="ask flex-1" placeholder="Ask a doubt, or paste a question" aria-label="Your message"></textarea>
-        <button id="send" class="btn">Send</button>
-      </div>
-      <div class="mt-2 flex justify-between gap-4 text-sm text-dust">
-        <span>Enter sends. Shift+Enter adds a new line.</span>
-        <button id="reset" class="underline">New chat</button>
+
+      <div class="px-5 sm:px-8 pb-5 pt-3 border-t border-white/10">
+        <div class="max-w-3xl mx-auto">
+          <div class="flex gap-3 items-end">
+            <textarea id="ask" rows="2" class="ask flex-1" placeholder="Ask a doubt, or paste a question" aria-label="Your message"></textarea>
+            <button id="send" class="btn">Send</button>
+          </div>
+          <p class="mt-2 text-sm text-dust">Enter sends, Shift+Enter adds a line. Type maths in LaTeX, like $x^2 + 1$.</p>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
   <script src="tutor.js"></script>
 </body>
 </html>

@@ -15,8 +15,6 @@ It starts with no data and makes random guesses. Every time you enter real resul
 - [Accuracy and evaluation](#accuracy-and-evaluation)
 - [Getting started](#getting-started)
 - [Using the dashboard](#using-the-dashboard)
-- [API](#api)
-- [Project structure](#project-structure)
 - [Limitations](#limitations)
 - [Ideas for next steps](#ideas-for-next-steps)
 
@@ -173,7 +171,6 @@ LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 - Replies show Markdown and maths. The tutor writes maths in LaTeX, and you can too: type `$x^2 + 1$` inline or `$$...$$` for a displayed equation. Rendering uses KaTeX, marked and DOMPurify from CDNs, so the page needs internet.
 - Your chats appear in a sidebar and are saved in your browser (localStorage) on this computer only. Clearing your browser data deletes them. The server does not store conversations.
 - When you pick a subject, the tutor is told your last few results in it so it can pitch its explanations. Your messages and those results are sent to your API provider.
-
 
 ## Limitations
 
